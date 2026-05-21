@@ -1,7 +1,7 @@
 [project]
 name = "netsentinel-mlops"
 version = "0.1.0"
-description = "Add your description here"
+description = "NetSentinel MLOps network threat detection pipeline"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
