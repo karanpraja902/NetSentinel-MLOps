@@ -2,6 +2,11 @@
 
 NetSentinel MLOps is an end-to-end machine learning operations project for detecting malicious network and phishing activity. It provides a modular pipeline for data ingestion, validation, transformation, model training, experiment tracking, artifact storage, and containerized API deployment.
 
+## Live Deployment
+
+- **Render API Docs**: [https://netsentinel-mlops.onrender.com/docs](https://netsentinel-mlops.onrender.com/docs)
+- **Base URL**: [https://netsentinel-mlops.onrender.com](https://netsentinel-mlops.onrender.com)
+
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
