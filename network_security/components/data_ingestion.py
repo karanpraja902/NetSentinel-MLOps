@@ -18,13 +18,11 @@ from network_security.logging.logger import logging
 
 load_dotenv()
 
-username = os.getenv("MONGO_DB_USERNAME")
-password = os.getenv("MONGO_DB_PASSWORD")
-
-username = quote_plus(username)
-password = quote_plus(password)
-
-MONGO_DB_URL: str = f"mongodb+srv://{username}:{password}@cluster0.l5ee6dv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+MONGO_DB_URL = os.getenv("MONGO_DB_URL")
+if not MONGO_DB_URL:
+    username = quote_plus(os.getenv("MONGO_DB_USERNAME", ""))
+    password = quote_plus(os.getenv("MONGO_DB_PASSWORD", ""))
+    MONGO_DB_URL = f"mongodb+srv://{username}:{password}@cluster0.l5ee6dv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 
 class DataIngestion:

@@ -17,6 +17,7 @@ wheels/
 
 # Log files
 logs/
+uvicorn.*.log
 
 # Artifacts
 Artifacts/

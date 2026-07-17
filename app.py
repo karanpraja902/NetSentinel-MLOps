@@ -23,7 +23,6 @@ from network_security.constant.training_pipeline import (
 )
 from network_security.exception.exception import NetworkSecurityException
 from network_security.logging.logger import logging
-from network_security.pipeline.training_pipeline import TrainingPipeline
 from network_security.utils.main_utils.utils import load_object
 from network_security.utils.ml_utils.model.estimator import NetworkModel
 
@@ -31,10 +30,12 @@ ca = certifi.where()
 
 
 load_dotenv()
-username = quote_plus(os.getenv("MONGO_DB_USERNAME"))
-password = quote_plus(os.getenv("MONGO_DB_PASSWORD"))
 
-mongo_db_url: str = f"mongodb+srv://{username}:{password}@cluster0.l5ee6dv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+mongo_db_url = os.getenv("MONGO_DB_URL")
+if not mongo_db_url:
+    username = quote_plus(os.getenv("MONGO_DB_USERNAME", ""))
+    password = quote_plus(os.getenv("MONGO_DB_PASSWORD", ""))
+    mongo_db_url = f"mongodb+srv://{username}:{password}@cluster0.l5ee6dv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 client = MongoClient(mongo_db_url, server_api=ServerApi("1"), tlsCAFile=ca)
 
@@ -65,6 +66,8 @@ async def index() -> RedirectResponse:
 @app.get("/train")
 async def train_route() -> Response:
     try:
+        from network_security.pipeline.training_pipeline import TrainingPipeline
+
         train_pipeline = TrainingPipeline()
         train_pipeline.run_pipeline()
         return Response("Training is successful")
@@ -92,7 +95,7 @@ async def predict_route(request: Request, file: Annotated[UploadFile, File()] = 
         table_html = df.to_html(classes="table table-striped")
         # print(table_html)
         return templates.TemplateResponse(
-            "table.html", {"request": request, "table": table_html},
+            request, "table.html", {"table": table_html},
         )
 
     except Exception as e:
@@ -100,4 +103,5 @@ async def predict_route(request: Request, file: Annotated[UploadFile, File()] = 
 
 
 if __name__ == "__main__":
-    app_run(app, host="0.0.0.0", port=8080)
+    port = int(os.getenv("PORT", "8080"))
+    app_run(app, host="0.0.0.0", port=port)

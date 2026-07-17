@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: netsentinel-mlops
+    runtime: docker
+    plan: free
+    repo: https://github.com/karanpraja902/NetSentinel-MLOps
+    branch: main
+    dockerfilePath: ./Dockerfile
+    autoDeployTrigger: commit
+    healthCheckPath: /docs
+    envVars:
+      - key: MONGO_DB_URL
+        sync: false
+      - key: DAGSHUB_USER_TOKEN
+        sync: false
